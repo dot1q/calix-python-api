@@ -17,10 +17,10 @@ import httplib
 import re
 import xml.etree.ElementTree as ET
 
-sessionID = sys.argv[1]
-target_url = str(config.protocol)+'://'+str(config.host)+':'+str(config.port)+str(config.extension)
-#Request string goes here
-xml_request = """
+def call(sessionID):
+   target_url = str(config.protocol)+'://'+str(config.host)+':'+str(config.port)+str(config.extension)
+   #Request string goes here
+   xml_request = """
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
   <soapenv:Body>
     <auth message-id="2">
@@ -32,9 +32,10 @@ xml_request = """
   </soapenv:Body>
 </soapenv:Envelope>
 """ % (config.username, sessionID)
+   send_xml(target_url, xml_request)
 
 
-def send_xml():
+def send_xml(target_url, xml_request):
   #Send target_url and xml_request to cms server, result is what was returned
   #NOTE! you must specify the header properly, or you will get an error returned!
   req = urllib2.Request(target_url, xml_request)
@@ -42,9 +43,3 @@ def send_xml():
   result = urllib2.urlopen(req).read()
   #if you get no errors, assume you are logged out. Might want to check CMS to make sure it worked!
 
-
-def main():   
-  send_xml()
-
-if __name__ == "__main__":
-  main()

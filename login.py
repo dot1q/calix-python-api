@@ -18,10 +18,12 @@ import httplib
 import re
 import xml.etree.ElementTree as ET
 
-target_url = str(config.protocol)+'://'+str(config.host)+':'+str(config.port) +str(config.extension)
 
-#Request string goes here
-xml_request = """
+def call():
+   target_url = str(config.protocol)+'://'+str(config.host)+':'+str(config.port) +str(config.extension)
+
+   #Request string goes here
+   xml_request = """
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
   <soapenv:Body>
     <auth message-id="1">
@@ -33,15 +35,16 @@ xml_request = """
   </soapenv:Body>
 </soapenv:Envelope>
 """ % (config.username, config.password)
+   return send_xml(target_url,xml_request)
 
 
-def send_xml():
+def send_xml(target_url,xml_request):
   #Send target_url and xml_request to cms server, result is what was returned
   #NOTE! you must specify the header properly, or you will get an error returned!
   req = urllib2.Request(target_url, xml_request)
   req.add_header('Content-Type','text/plain;charset=UTF-8')
   result = urllib2.urlopen(req).read()  
-  parseSession(result) 
+  return parseSession(result) 
 
 def parseSession(result):
    #store passed XML data at var data
@@ -50,10 +53,7 @@ def parseSession(result):
    session = "null dude"
    for elem in data.iter(tag='SessionId'):
       session = elem.text
-   print(session)
+   #print(session)
 
-def main():   
-  send_xml()
+   return session
 
-if __name__ == "__main__":
-  main()
