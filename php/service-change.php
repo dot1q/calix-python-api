@@ -4,7 +4,12 @@
 
 #Python execute function
 function executeScript($serial) {
-       echo "Hello world!";
+   echo "Executing script";
+   $command = escapeshellcmd('../service-ont.py');
+   $output = shell_exec($command);
+   echo $output;
+
+
 }
 
 $serial = "000000";

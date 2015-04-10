@@ -73,12 +73,13 @@ def parseOntId(result):
 
 def disableRG(sessionID, gpon_type, gpon_fsan, gpon_state, ont):
    target_url = str(config.protocol)+'://'+str(config.host)+':'+str(config.port) +str(config.extension)
-   if (gpon_state == 1):
-      gpon_state = "enabled"
-   elif (gpon_state == 0):
-      gpon_state = "disabled"
+   if (gpon_state == '1'):
+      state = "enabled"
+   elif (gpon_state == '0'):
+      state = "disabled"
    else:
-      gpon_state = "enabled"
+      state = "enabled"
+   print "status is ",state
    xml_request = """
 <soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
    <soapenv:Body>
@@ -94,7 +95,7 @@ def disableRG(sessionID, gpon_type, gpon_fsan, gpon_state, ont):
 		       <id>
 		          <ont>%s</ont>
 		       </id>
-		    <admin>%s<admin>
+		       <admin>%s</admin>
 		  </object>
 	       </top>
             </config>
@@ -102,7 +103,7 @@ def disableRG(sessionID, gpon_type, gpon_fsan, gpon_state, ont):
       </rpc>
    </soapenv:Body>
 </soapenv:Envelope>
-   """ % (config.nodename, config.username, sessionID, ont, gpon_state)
+   """ % (config.nodename, config.username, sessionID, ont, state)
    request = urllib2.Request(target_url, xml_request)
    request.add_header('Content-Type','text/plain;charset=UTF-8')
    resultRead = urllib2.urlopen(request).read()
