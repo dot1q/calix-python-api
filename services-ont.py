@@ -65,7 +65,7 @@ def pulldata(sessionID, gpon_type, gpon_fsan, gpon_state):
 def parseOntId(result):
    #store passed XML data at var data
    data = ET.fromstring(result)
-   ont = "null dude" #make sure the session is le null
+   ont = "NULL ONT ID, MAY NOT EXIST!" #make sure the session is le null
    for elem in data.iter(tag='ont'):
       ont = elem.text
    print ("operation completed! results, ont:",ont)
@@ -123,6 +123,6 @@ if __name__== "__main__":
    gpon_fsan = sys.argv[2]
    gpon_state = sys.argv[3]
    #arguments are expected to be correct at this point
-
+   #print("Processing type: "+str(gpon_type)+" serial "+str(gpon_fsan)+" state "+str(gpon_state)+"\n"); #Debuging for inputs
    main(gpon_type, gpon_fsan, gpon_state)
 

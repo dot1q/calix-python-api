@@ -3,9 +3,9 @@
 
 
 #Python execute function
-function executeScript($serial) {
-   echo "Executing script";
-   $command = escapeshellcmd('../service-ont.py');
+function executeScript($serial, $value) {
+   echo "Executing script...<br />";
+   $command = escapeshellcmd('python ../services-ont.py Ont '.$serial.' '.$value);
    $output = shell_exec($command);
    echo $output;
 
@@ -15,14 +15,21 @@ function executeScript($serial) {
 $serial = "000000";
 	if(isset($_GET['serial'])) {
 	   $serial = $_GET['serial'];
-	   echo("Serial was obtained via GET! ".$serial);
+	   if((isset($_GET['state'])) and ($_GET['state'] == '0')){
+	      $state = 0;
+	   }else{
+	      $state = 1;
+	   }
+	   echo("Serial was obtained via GET! ".$serial."<br />");
+	   echo("State is: ".$state."<br />");
 	   echo("<hr>");
-	   executeScript($serial);
+	   executeScript($serial, $state);
 	}else{
-	   echo("Serial was not found via GET: ".$serial);
+	   echo("Serial was not found via GET<br />");
 ?>
 	   <form action="" method="get">
 	      Serial: <input type="text" name="serial"><br>
+	      Suspend: <input type="checkbox" name="state" value="0" /><br>
 	      <input type="submit">
 	   </form>
 <?php
